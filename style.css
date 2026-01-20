@@ -849,3 +849,419 @@ footer {
   display: block; /* Menghilangkan celah putih di bawah gambar */
   border-radius: 4px; /* Opsional: Sedikit lengkungan agar manis */
 }
+
+/* --- ORDER PAGE STYLES --- */
+
+.order-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  position: relative;
+  z-index: 10;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-group {
+  margin-bottom: 25px;
+  position: relative;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  background: #fafafa;
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+  border-radius: 0; /* Kotak tajam ala blueprint */
+  transition: 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--accent);
+  outline: none;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(0, 68, 255, 0.1);
+}
+
+.select-wrapper {
+  position: relative;
+}
+.select-wrapper i {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #888;
+  font-size: 0.8rem;
+}
+/* Hilangkan panah default select di beberapa browser */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.full-width {
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* INVOICE STYLES (STEP 2) */
+.invoice-box {
+  background: #f9f9f9;
+  border: 1px dashed var(--border);
+  padding: 25px;
+  margin-bottom: 30px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  font-weight: 700;
+  font-size: 1.2rem;
+  font-family: "Space Grotesk", sans-serif;
+}
+
+.bank-card {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border);
+  padding: 15px;
+  margin-bottom: 15px;
+  background: #fff;
+  gap: 15px;
+}
+.bank-logo {
+  width: 60px;
+  height: 40px;
+  background: var(--text-primary);
+  color: #fff;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+}
+.bank-number {
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+.copy-btn {
+  margin-left: auto;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--accent);
+}
+
+.upload-area {
+  border: 2px dashed var(--border);
+  padding: 30px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.3s;
+  position: relative;
+}
+.upload-area:hover {
+  border-color: var(--accent);
+  background: rgba(0, 68, 255, 0.02);
+}
+
+.btn-group {
+  display: flex;
+  gap: 15px;
+}
+.btn-group button {
+  flex: 1;
+  text-align: center;
+}
+
+/* Responsive Order Page */
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .btn-group {
+    flex-direction: column;
+  }
+}
+
+/* --- STEP 2: INVOICE & CONFIRMATION STYLE --- */
+
+.step-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  border-bottom: 2px solid var(--text-primary);
+  padding-bottom: 15px;
+}
+
+.status-badge {
+  background: #fff3cd;
+  color: #856404;
+  padding: 5px 10px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border: 1px solid #ffeeba;
+}
+
+/* Summary Box */
+.summary-box {
+  background: #fafafa;
+  border: 1px solid var(--border);
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.mono-label {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 15px;
+  display: block;
+  letter-spacing: 0.05em;
+}
+
+.sum-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px dashed #e0e0e0;
+  font-size: 0.95rem;
+}
+
+.sum-label {
+  color: var(--text-secondary);
+}
+.sum-value {
+  font-weight: 500;
+  text-align: right;
+}
+.sum-value.highlight {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.sum-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 2px solid var(--text-primary);
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+.total-amount {
+  color: var(--accent);
+  font-size: 1.3rem;
+}
+
+/* Bank List */
+.bank-section {
+  margin-bottom: 30px;
+}
+.bank-item {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border);
+  padding: 15px;
+  margin-bottom: 10px;
+  background: #fff;
+  transition: 0.2s;
+}
+.bank-item:hover {
+  border-color: var(--accent);
+}
+
+.bank-icon {
+  width: 60px;
+  font-weight: 800;
+  font-family: "Space Grotesk", sans-serif;
+  color: var(--text-primary);
+  border-right: 1px solid #eee;
+  margin-right: 15px;
+}
+
+.bank-info {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+.rek-number {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.rek-name {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.btn-copy {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #bbb;
+  transition: 0.3s;
+}
+.btn-copy:hover {
+  color: var(--accent);
+}
+
+.mono-tiny {
+  font-size: 0.75rem;
+  color: #888;
+  margin-top: 8px;
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* Upload Area Update */
+.upload-area {
+  border: 2px dashed #ccc;
+  background: #fafafa;
+  padding: 30px;
+  text-align: center;
+  position: relative;
+  transition: 0.3s;
+  cursor: pointer;
+}
+.upload-area:hover {
+  border-color: var(--accent);
+  background: #f0f4ff;
+}
+.upload-content p {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+.upload-area input[type="file"] {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Responsiveness */
+@media (max-width: 600px) {
+  .sum-row {
+    flex-direction: column;
+    gap: 5px;
+  }
+  .sum-value {
+    text-align: left;
+  }
+}
+
+/* --- CUSTOM TOAST NOTIFICATIONS --- */
+#toast-container {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.toast {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent); /* Default Blue for Success */
+  padding: 20px;
+  min-width: 320px;
+  max-width: 400px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+
+  /* Animasi Masuk */
+  transform: translateX(150%);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.toast.show {
+  transform: translateX(0);
+}
+
+/* Variant Error (Merah) */
+.toast.error {
+  border-left-color: #ff4444;
+}
+.toast.error .toast-icon {
+  color: #ff4444;
+}
+
+.toast-icon {
+  font-size: 1.2rem;
+  color: var(--accent);
+  margin-top: 2px;
+}
+
+.toast-content {
+  flex-grow: 1;
+}
+
+.toast-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 4px;
+  display: block;
+  color: var(--text-primary);
+}
+
+.toast-msg {
+  font-family: "Inter", sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.toast-close {
+  background: none;
+  border: none;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0;
+  transition: 0.2s;
+}
+.toast-close:hover {
+  color: var(--text-primary);
+}

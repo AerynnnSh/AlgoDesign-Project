@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Project | AlgoDesign</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/png" href="img/favicon.png" />
+  </head>
+  <body>
+    <div id="toast-container"></div>
+
+    <header id="navbar" style="position: relative">
+      <div class="container nav-container">
+        <a href="index.html" class="logo">AlgoDesign<span>.</span></a>
+        <a href="index.html" class="mono" style="font-size: 0.9rem"
+          >&larr; BACK TO HOME</a
+        >
+      </div>
+    </header>
+
+    <div
+      class="container"
+      style="max-width: 800px; margin: 50px auto; padding-bottom: 100px"
+    >
+      <div
+        class="center-text section-gap"
+        style="margin-top: 0; margin-bottom: 40px"
+      >
+        <h2 class="section-title">Start Engagement</h2>
+        <span class="mono">// PROJECT INITIATION PROTOCOL</span>
+      </div>
+
+      <div id="step-1" class="order-card reveal active">
+        <form id="orderForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="mono">Full Name *</label>
+              <input
+                type="text"
+                id="name"
+                required
+                placeholder="e.g. John Doe"
+              />
+            </div>
+            <div class="form-group">
+              <label class="mono">Email Address *</label>
+              <input
+                type="email"
+                id="email"
+                required
+                placeholder="name@company.com"
+              />
+            </div>
+            <div class="form-group">
+              <label class="mono">WhatsApp / Telegram *</label>
+              <input type="text" id="phone" required placeholder="+62 812..." />
+            </div>
+            <div class="form-group">
+              <label class="mono">Selected Plan *</label>
+              <div class="select-wrapper">
+                <select id="package" required>
+                  <option value="starter">Starter - $150</option>
+                  <option value="professional">Professional - $350</option>
+                  <option value="enterprise">Enterprise - Custom</option>
+                </select>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="mono">Project Brief / Requirements *</label>
+            <textarea
+              id="brief"
+              rows="5"
+              required
+              placeholder="Describe your trading bot, exchange platform, or DeFi protocol needs..."
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="mono">Preferred Meeting Date *</label>
+            <input type="date" id="date" required />
+          </div>
+
+          <button
+            type="button"
+            class="btn-cta full-width"
+            onclick="goToStep2()"
+          >
+            PROCEED TO INVOICE &rarr;
+          </button>
+        </form>
+      </div>
+
+      <div
+        id="step-2"
+        class="order-card"
+        style="display: none; opacity: 0; transition: opacity 0.5s"
+      >
+        <div class="step-header">
+          <h3
+            class="mono section-title-small"
+            style="font-size: 1.1rem; margin: 0"
+          >
+            // PAYMENT PROTOCOL
+          </h3>
+          <span class="status-badge">PENDING</span>
+        </div>
+
+        <div class="summary-box">
+          <h4 class="mono-label">ORDER MANIFEST</h4>
+          <div class="summary-grid">
+            <div class="sum-row">
+              <span class="sum-label">Client Name:</span>
+              <span id="sum-name" class="sum-value">...</span>
+            </div>
+            <div class="sum-row">
+              <span class="sum-label">Email:</span>
+              <span id="sum-email" class="sum-value">...</span>
+            </div>
+            <div class="sum-row">
+              <span class="sum-label">WhatsApp:</span>
+              <span id="sum-phone" class="sum-value">...</span>
+            </div>
+            <div class="sum-row">
+              <span class="sum-label">Selected Plan:</span>
+              <span id="sum-package" class="sum-value highlight">...</span>
+            </div>
+            <div class="sum-row">
+              <span class="sum-label">Meeting Date:</span>
+              <span id="sum-date" class="sum-value">...</span>
+            </div>
+            <div class="sum-total-row">
+              <span>TOTAL SETTLEMENT:</span>
+              <span id="sum-total" class="total-amount">...</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bank-section">
+          <h4 class="mono-label">TRANSFER DESTINATION</h4>
+          <div class="bank-list">
+            <div class="bank-item">
+              <div class="bank-icon">BCA</div>
+              <div class="bank-info">
+                <span class="rek-number mono">1234 5678 9012</span>
+                <span class="rek-name">PT. AlgoDesign Studio</span>
+              </div>
+              <button class="btn-copy" onclick="copyText('123456789012')">
+                <i class="far fa-copy"></i>
+              </button>
+            </div>
+
+            <div class="bank-item">
+              <div class="bank-icon">MANDIRI</div>
+              <div class="bank-info">
+                <span class="rek-number mono">9876 5432 1098</span>
+                <span class="rek-name">PT. AlgoDesign Studio</span>
+              </div>
+              <button class="btn-copy" onclick="copyText('987654321098')">
+                <i class="far fa-copy"></i>
+              </button>
+            </div>
+          </div>
+          <p class="mono-tiny">
+            <i class="fas fa-info-circle"></i> Please transfer the exact amount
+            to verify automatically.
+          </p>
+        </div>
+
+        <div class="confirmation-section">
+          <div class="form-group">
+            <label class="mono">Payment Proof *</label>
+            <div class="upload-area" id="drop-area">
+              <div class="upload-content" id="upload-content-text">
+                <i class="fas fa-cloud-upload-alt fa-2x"></i>
+                <p>
+                  Drag file here or click to upload<br /><span class="mono-tiny"
+                    >(JPG, PNG, PDF max 2MB)</span
+                  >
+                </p>
+              </div>
+              <input type="file" id="payment-proof" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="mono">Additional Notes (Optional)</label>
+            <textarea
+              id="notes"
+              rows="2"
+              placeholder="E.g. I transferred from account name..."
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <button
+            type="button"
+            class="btn-cta btn-secondary"
+            onclick="backToStep1()"
+          >
+            &larr; MODIFY DATA
+          </button>
+          <button type="button" class="btn-cta" onclick="finishOrder()">
+            CONFIRM PAYMENT
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // --- SISTEM NOTIFIKASI TOAST (CUSTOM) ---
+      function showToast(title, message, type = "success") {
+        const container = document.getElementById("toast-container");
+
+        const toast = document.createElement("div");
+        toast.className = `toast ${type}`;
+
+        const iconClass =
+          type === "success" ? "fa-check-circle" : "fa-exclamation-circle";
+
+        toast.innerHTML = `
+              <i class="fas ${iconClass} toast-icon"></i>
+              <div class="toast-content">
+                  <span class="toast-title">${title}</span>
+                  <span class="toast-msg">${message}</span>
+              </div>
+              <button class="toast-close" onclick="this.parentElement.remove()">&times;</button>
+          `;
+
+        container.appendChild(toast);
+
+        setTimeout(() => {
+          toast.classList.add("show");
+        }, 10);
+
+        setTimeout(() => {
+          toast.classList.remove("show");
+          setTimeout(() => toast.remove(), 400);
+        }, 4000);
+      }
+
+      // --- LOGIKA UTAMA ---
+
+      window.addEventListener("DOMContentLoaded", () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const plan = urlParams.get("plan");
+        if (plan) {
+          const select = document.getElementById("package");
+          select.value = plan;
+        }
+
+        // Listener Upload File (Visual Feedback)
+        const fileInput = document.getElementById("payment-proof");
+        const uploadText = document.getElementById("upload-content-text");
+        const dropArea = document.getElementById("drop-area");
+
+        fileInput.addEventListener("change", function (e) {
+          if (e.target.files.length > 0) {
+            const fileName = e.target.files[0].name;
+            uploadText.innerHTML = `
+                    <i class="fas fa-check-circle fa-2x" style="color: #0044FF; margin-bottom: 10px;"></i>
+                    <p style="color: #000; font-weight: 600;">${fileName}</p>
+                    <span class="mono-tiny" style="color: green;">Ready to upload</span>
+                `;
+            dropArea.style.borderColor = "#0044FF";
+            dropArea.style.background = "rgba(0, 68, 255, 0.05)";
+            dropArea.classList.remove("error-border");
+          }
+        });
+      });
+
+      // UPDATE: VALIDASI TANGGAL WAJIB DIISI
+      function goToStep2() {
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const phone = document.getElementById("phone").value;
+        const date = document.getElementById("date").value;
+        const pkg = document.getElementById("package");
+        const pkgText = pkg.options[pkg.selectedIndex].text;
+
+        // Validasi: Cek apakah nama, email, hp, atau TANGGAL kosong
+        if (!name || !email || !phone || !date) {
+          showToast(
+            "Form Incomplete",
+            "Please fill in Name, Email, WhatsApp, and Meeting Date.",
+            "error"
+          );
+          return;
+        }
+
+        document.getElementById("sum-name").innerText = name;
+        document.getElementById("sum-email").innerText = email;
+        document.getElementById("sum-phone").innerText = phone;
+        document.getElementById("sum-date").innerText = date; // Tidak perlu fallback karena wajib
+
+        const splitPkg = pkgText.split(" - ");
+        document.getElementById("sum-package").innerText = splitPkg[0];
+        document.getElementById("sum-total").innerText = splitPkg[1];
+
+        const step1 = document.getElementById("step-1");
+        const step2 = document.getElementById("step-2");
+
+        step1.style.display = "none";
+        step1.classList.remove("active");
+
+        step2.style.display = "block";
+        setTimeout(() => {
+          step2.style.opacity = "1";
+        }, 50);
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function backToStep1() {
+        const step1 = document.getElementById("step-1");
+        const step2 = document.getElementById("step-2");
+
+        step2.style.opacity = "0";
+        setTimeout(() => {
+          step2.style.display = "none";
+          step1.style.display = "block";
+          setTimeout(() => step1.classList.add("active"), 50);
+        }, 300);
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function finishOrder() {
+        const fileInput = document.getElementById("payment-proof");
+        if (fileInput.files.length === 0) {
+          showToast(
+            "Proof Missing",
+            "Please upload payment proof to continue.",
+            "error"
+          );
+
+          const dropArea = document.getElementById("drop-area");
+          dropArea.style.borderColor = "#FF4444";
+          dropArea.style.background = "rgba(255, 68, 68, 0.05)";
+
+          fileInput.scrollIntoView({ behavior: "smooth", block: "center" });
+          return;
+        }
+
+        showToast(
+          "Payment Confirmed",
+          "Order details received. Redirecting...",
+          "success"
+        );
+
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 3000);
+      }
+
+      function copyText(text) {
+        navigator.clipboard.writeText(text);
+        showToast("Copied", `${text} copied to clipboard.`, "success");
+      }
+    </script>
+  </body>
+</html>
