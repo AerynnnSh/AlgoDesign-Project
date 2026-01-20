@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Console | AlgoDesign</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/png" href="img/favicon.png" />
+
+    <style>
+      /* CSS RESET & LAYOUT */
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        background: #f4f6f8;
+        margin: 0;
+        overflow-x: hidden;
+      }
+
+      .sidebar {
+        background: #0f172a;
+        color: #94a3b8;
+        padding: 30px 20px;
+        border-right: 1px solid #1e293b;
+        position: fixed;
+        width: 260px;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+      }
+      .main-content {
+        margin-left: 260px;
+        width: calc(100% - 260px);
+        padding: 40px;
+        min-height: 100vh;
+      }
+
+      .sidebar-logo {
+        font-family: "Space Grotesk";
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: 50px;
+        padding-left: 10px;
+        text-decoration: none;
+      }
+      .sidebar-logo span {
+        color: var(--accent);
+      }
+      .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 12px 15px;
+        color: #94a3b8;
+        text-decoration: none;
+        font-family: "Inter";
+        font-size: 0.95rem;
+        border-radius: 8px;
+        transition: 0.3s;
+        margin-bottom: 5px;
+        cursor: pointer;
+      }
+      .menu-item:hover,
+      .menu-item.active {
+        background: #1e293b;
+        color: #fff;
+      }
+      .menu-item i {
+        width: 20px;
+        text-align: center;
+      }
+
+      .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+      }
+      .page-title {
+        font-family: "Space Grotesk";
+        font-size: 2rem;
+        margin: 5px 0 0 0;
+        color: #0f172a;
+      }
+
+      /* KPI & TABLES */
+      .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+        margin-bottom: 40px;
+      }
+      .kpi-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      }
+      .kpi-label {
+        font-family: "JetBrains Mono";
+        font-size: 0.75rem;
+        color: #64748b;
+        display: block;
+        margin-bottom: 10px;
+      }
+      .kpi-value {
+        font-family: "Space Grotesk";
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #0f172a;
+      }
+
+      .table-container {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        overflow: hidden;
+        width: 100%;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      }
+      .table-header {
+        padding: 20px 25px;
+        border-bottom: 1px solid #e2e8f0;
+        background: #f8fafc;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th {
+        text-align: left;
+        padding: 15px 25px;
+        background: #f8fafc;
+        font-family: "JetBrains Mono";
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #64748b;
+        text-transform: uppercase;
+      }
+      td {
+        padding: 18px 25px;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 0.9rem;
+        color: #334155;
+        vertical-align: middle;
+      }
+
+      .status-pill {
+        padding: 4px 10px;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        display: inline-block;
+        font-family: "Inter";
+      }
+      .status-pill.pending {
+        background: #fff7ed;
+        color: #9a3412;
+        border: 1px solid #ffedd5;
+      }
+      .status-pill.verified {
+        background: #dcfce7;
+        color: #166534;
+        border: 1px solid #bbf7d0;
+      }
+
+      .btn-action {
+        border: 1px solid #e2e8f0;
+        background: #fff;
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+        cursor: pointer;
+        color: #64748b;
+        transition: 0.2s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .btn-action:hover {
+        background: #f1f5f9;
+        color: #0f172a;
+      }
+      .view-proof-link {
+        color: var(--accent);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.85rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      /* --- NEW MODAL STYLES (SPLIT LAYOUT) --- */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(15, 23, 42, 0.9);
+        z-index: 999;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .modal-overlay.open {
+        display: flex;
+        opacity: 1;
+      }
+
+      .modal-box {
+        background: #fff;
+        width: 95%;
+        max-width: 900px;
+        height: 85vh;
+        border-radius: 12px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transform: scale(0.9);
+        transition: transform 0.3s;
+      }
+      .modal-overlay.open .modal-box {
+        transform: scale(1);
+      }
+
+      .modal-header {
+        padding: 15px 25px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #f8fafc;
+      }
+
+      .modal-content-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        flex-grow: 1;
+        overflow: hidden;
+      }
+
+      /* LEFT: INFO */
+      .modal-info {
+        padding: 30px;
+        overflow-y: auto;
+        background: #fff;
+      }
+      .info-group {
+        margin-bottom: 20px;
+      }
+      .info-label {
+        font-family: "JetBrains Mono";
+        font-size: 0.75rem;
+        color: #64748b;
+        display: block;
+        margin-bottom: 5px;
+      }
+      .info-value {
+        font-family: "Inter";
+        font-size: 1rem;
+        color: #0f172a;
+        font-weight: 500;
+      }
+      .info-brief {
+        background: #f1f5f9;
+        padding: 15px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: #334155;
+        white-space: pre-wrap;
+      }
+
+      /* RIGHT: IMAGE */
+      .modal-image {
+        background: #0f172a;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        overflow: hidden;
+      }
+      .proof-img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        border-radius: 8px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      }
+
+      .view-section {
+        display: none;
+        animation: fadeIn 0.4s;
+      }
+      .view-section.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 900px) {
+        .modal-content-grid {
+          grid-template-columns: 1fr;
+          overflow-y: auto;
+        }
+        .modal-image {
+          min-height: 300px;
+        }
+        .sidebar {
+          display: none;
+        } /* Hide sidebar on mobile for simplicity */
+        .main-content {
+          margin-left: 0;
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="modal-overlay" id="proofModal">
+      <div class="modal-box">
+        <div class="modal-header">
+          <div>
+            <h4
+              style="margin: 0; font-family: 'Space Grotesk'; font-size: 1.2rem"
+              id="modalTitle"
+            >
+              Order Details
+            </h4>
+            <span
+              class="mono"
+              style="font-size: 0.8rem; color: #64748b"
+              id="modalId"
+              >#ORD-XXXX</span
+            >
+          </div>
+          <button
+            onclick="closeModal()"
+            style="
+              border: none;
+              background: none;
+              font-size: 1.5rem;
+              cursor: pointer;
+            "
+          >
+            &times;
+          </button>
+        </div>
+
+        <div class="modal-content-grid">
+          <div class="modal-info">
+            <h5 style="margin-top: 0; color: var(--accent)">
+              CLIENT INFORMATION
+            </h5>
+            <div class="info-group">
+              <span class="info-label">FULL NAME</span>
+              <div class="info-value" id="d-name">...</div>
+            </div>
+            <div class="info-group">
+              <span class="info-label">CONTACTS</span>
+              <div class="info-value" id="d-email">...</div>
+              <div class="info-value" id="d-phone" style="margin-top: 5px">
+                ...
+              </div>
+              <a
+                href="#"
+                id="btn-wa"
+                target="_blank"
+                style="
+                  display: inline-block;
+                  margin-top: 10px;
+                  font-size: 0.8rem;
+                  color: #166534;
+                  background: #dcfce7;
+                  padding: 5px 10px;
+                  border-radius: 4px;
+                  text-decoration: none;
+                "
+              >
+                <i class="fab fa-whatsapp"></i> Chat Client
+              </a>
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 25px 0" />
+
+            <h5 style="color: var(--accent)">PROJECT DETAILS</h5>
+            <div class="info-group" style="display: flex; gap: 20px">
+              <div>
+                <span class="info-label">PACKAGE</span>
+                <div class="info-value" id="d-package">...</div>
+              </div>
+              <div>
+                <span class="info-label">TOTAL PAID</span>
+                <div class="info-value" id="d-amount">...</div>
+              </div>
+            </div>
+            <div class="info-group">
+              <span class="info-label">REQUESTED MEETING DATE</span>
+              <div class="info-value" id="d-date">...</div>
+            </div>
+            <div class="info-group">
+              <span class="info-label">PROJECT BRIEF</span>
+              <div class="info-brief" id="d-brief">...</div>
+            </div>
+          </div>
+
+          <div class="modal-image">
+            <img src="" id="proofImage" class="proof-img" alt="Payment Proof" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="sidebar">
+      <a href="index.html" class="sidebar-logo">AlgoDesign<span>.</span></a>
+      <nav>
+        <div class="menu-item active" onclick="switchView('dashboard', this)">
+          <i class="fas fa-chart-line"></i> Dashboard
+        </div>
+        <div class="menu-item" onclick="switchView('orders', this)">
+          <i class="fas fa-shopping-cart"></i> Orders
+          <span
+            style="
+              margin-left: auto;
+              font-size: 0.7rem;
+              background: #334155;
+              padding: 2px 8px;
+              border-radius: 4px;
+            "
+            id="order-count-badge"
+            >0</span
+          >
+        </div>
+        <div class="menu-item" onclick="switchView('clients', this)">
+          <i class="fas fa-users"></i> Clients
+        </div>
+        <div class="menu-item" onclick="switchView('settings', this)">
+          <i class="fas fa-cog"></i> Settings
+        </div>
+        <div style="margin-top: auto"></div>
+        <a
+          href="index.html"
+          class="menu-item"
+          onclick="return confirm('Exit Admin Console?')"
+          ><i class="fas fa-sign-out-alt"></i> Logout</a
+        >
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <div class="top-bar">
+        <div>
+          <span class="mono" style="color: #64748b">// SYSTEM OVERVIEW</span>
+          <h1 class="page-title" id="page-heading">Dashboard</h1>
+        </div>
+        <div style="display: flex; gap: 12px; align-items: center">
+          <div style="text-align: right">
+            <div style="font-weight: 600; font-size: 0.9rem">Admin User</div>
+            <div class="mono" style="font-size: 0.75rem; color: #64748b">
+              root@algodesign.id
+            </div>
+          </div>
+          <div
+            style="
+              width: 40px;
+              height: 40px;
+              background: #cbd5e1;
+              border-radius: 50%;
+            "
+          ></div>
+        </div>
+      </div>
+
+      <section id="view-dashboard" class="view-section active">
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <span class="kpi-label">TOTAL REVENUE (EST)</span
+            ><span class="kpi-value" id="kpi-revenue">$0</span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label">ACTIVE ORDERS</span
+            ><span class="kpi-value" id="kpi-orders">0</span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label">CONVERSION RATE</span
+            ><span class="kpi-value">3.2%</span>
+          </div>
+        </div>
+        <div class="table-container">
+          <div class="table-header">
+            <h3 style="margin: 0; font-size: 1.1rem">Recent Incoming Orders</h3>
+            <button
+              style="
+                border: none;
+                background: none;
+                color: var(--accent);
+                cursor: pointer;
+                font-size: 0.85rem;
+              "
+              onclick="switchView('orders')"
+            >
+              View All &rarr;
+            </button>
+          </div>
+          <div style="overflow-x: auto">
+            <table>
+              <thead>
+                <tr>
+                  <th>ORDER ID</th>
+                  <th>CLIENT NAME</th>
+                  <th>PACKAGE</th>
+                  <th>AMOUNT</th>
+                  <th>DETAILS</th>
+                  <th>STATUS</th>
+                  <th>ACTION</th>
+                </tr>
+              </thead>
+              <tbody id="dashboard-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-orders" class="view-section">
+        <div class="table-container">
+          <div class="table-header">
+            <h3 style="margin: 0">All Transaction Data</h3>
+            <button
+              class="btn-action"
+              style="width: auto; padding: 0 10px"
+              onclick="resetData()"
+            >
+              <i class="fas fa-trash" style="margin-right: 5px"></i> Reset Data
+            </button>
+          </div>
+          <div style="overflow-x: auto">
+            <table>
+              <thead>
+                <tr>
+                  <th>ORDER ID</th>
+                  <th>CLIENT NAME</th>
+                  <th>DATE</th>
+                  <th>PACKAGE</th>
+                  <th>AMOUNT</th>
+                  <th>DETAILS</th>
+                  <th>STATUS</th>
+                  <th>ACTION</th>
+                </tr>
+              </thead>
+              <tbody id="orders-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-clients" class="view-section">
+        <div class="kpi-card">
+          <h3>Registered Clients</h3>
+          <div id="clients-list"></div>
+        </div>
+      </section>
+      <section id="view-settings" class="view-section">
+        <div class="kpi-card">
+          <h3>Configuration</h3>
+          <p>Settings panel simulation.</p>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      function switchView(viewId, menuElement) {
+        document
+          .querySelectorAll(".view-section")
+          .forEach((el) => el.classList.remove("active"));
+        document.getElementById("view-" + viewId).classList.add("active");
+        const titles = {
+          dashboard: "Dashboard",
+          orders: "Order Management",
+          clients: "Client Database",
+          settings: "Settings",
+        };
+        document.getElementById("page-heading").innerText = titles[viewId];
+        if (menuElement) {
+          document
+            .querySelectorAll(".menu-item")
+            .forEach((el) => el.classList.remove("active"));
+          menuElement.classList.add("active");
+        } else if (viewId === "orders") {
+          document
+            .querySelectorAll(".menu-item")
+            .forEach((el) => el.classList.remove("active"));
+          document.querySelectorAll(".menu-item")[1].classList.add("active");
+        }
+      }
+
+      function loadData() {
+        const orders = JSON.parse(localStorage.getItem("algoOrders")) || [];
+        document.getElementById("order-count-badge").innerText = orders.length;
+        document.getElementById("kpi-orders").innerText = orders.length;
+        let totalRev = 0;
+        orders.forEach((o) => {
+          let price = o.amount.replace(/[^0-9]/g, "");
+          if (price) totalRev += parseInt(price);
+        });
+        document.getElementById("kpi-revenue").innerText =
+          totalRev > 100000
+            ? "Rp " + totalRev.toLocaleString()
+            : "$" + totalRev.toLocaleString();
+        renderTables(orders);
+        renderClients(orders);
+      }
+
+      function renderTables(orders) {
+        const dBody = document.getElementById("dashboard-table-body");
+        const oBody = document.getElementById("orders-table-body");
+        dBody.innerHTML = "";
+        oBody.innerHTML = "";
+
+        if (orders.length === 0) {
+          const emptyHTML = `<tr><td colspan="8" style="padding:40px; text-align:center; color:#999;">No orders yet.</td></tr>`;
+          dBody.innerHTML = emptyHTML;
+          oBody.innerHTML = emptyHTML;
+          return;
+        }
+
+        orders
+          .slice()
+          .reverse()
+          .forEach((order, index) => {
+            const realIndex = orders.length - 1 - index;
+            let statusClass =
+              order.status === "Verified" ? "verified" : "pending";
+            let statusIcon =
+              order.status === "Verified"
+                ? '<i class="fas fa-check-circle"></i>'
+                : '<i class="fas fa-clock"></i>';
+
+            // TOMBOL VIEW DETAILS (Memicu Modal Baru)
+            const detailBtn = `<a href="#" class="view-proof-link" onclick="viewOrderDetails('${order.id}')"><i class="fas fa-eye"></i> View Details</a>`;
+
+            const rowContent = `
+                <td class="mono" style="color:var(--accent);">${order.id}</td>
+                <td style="font-weight:600;">${order.name}</td>
+                <td><span style="font-size:0.75rem; background:#F1F5F9; padding:2px 8px; border-radius:4px;">${order.package}</span></td>
+                <td>${order.amount}</td>
+                <td>${detailBtn}</td>
+                <td><span class="status-pill ${statusClass}">${statusIcon} ${order.status}</span></td>
+                <td>
+                    <button class="btn-action btn-check" onclick="approveOrder(${realIndex})"><i class="fas fa-check"></i></button>
+                    <button class="btn-action btn-delete" onclick="deleteOrder(${realIndex})"><i class="fas fa-trash-alt"></i></button>
+                </td>
+            `;
+
+            // Render Dashboard (Simplified)
+            if (index < 5) {
+              const tr = document.createElement("tr");
+              tr.innerHTML = rowContent;
+              dBody.appendChild(tr);
+            }
+
+            // Render Orders (Full with Date)
+            const trO = document.createElement("tr");
+            trO.innerHTML = `
+                <td class="mono" style="color:var(--accent);">${order.id}</td>
+                <td style="font-weight:600;">${order.name}</td>
+                <td class="mono" style="font-size:0.8rem;">${order.submitDate}</td>
+                <td><span style="font-size:0.75rem; background:#F1F5F9; padding:2px 8px; border-radius:4px;">${order.package}</span></td>
+                <td>${order.amount}</td>
+                <td>${detailBtn}</td>
+                <td><span class="status-pill ${statusClass}">${statusIcon} ${order.status}</span></td>
+                <td>
+                    <button class="btn-action btn-check" onclick="approveOrder(${realIndex})"><i class="fas fa-check"></i></button>
+                    <button class="btn-action btn-delete" onclick="deleteOrder(${realIndex})"><i class="fas fa-trash-alt"></i></button>
+                </td>`;
+            oBody.appendChild(trO);
+          });
+      }
+
+      function renderClients(orders) {
+        const container = document.getElementById("clients-list");
+        container.innerHTML = "";
+        const uniqueClients = [...new Set(orders.map((item) => item.name))];
+        if (uniqueClients.length === 0) {
+          container.innerHTML =
+            "<p style='color:#999; text-align:center;'>No clients yet.</p>";
+          return;
+        }
+        uniqueClients.forEach((name) => {
+          const clientData = orders.find((o) => o.name === name);
+          const div = document.createElement("div");
+          div.style.cssText =
+            "display:flex; align-items:center; gap:15px; padding:15px; border-bottom:1px solid #EEE;";
+          div.innerHTML = `<div style="width:40px; height:40px; background:#EEE; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; color:#666;">${name
+            .charAt(0)
+            .toUpperCase()}</div><div><div style="font-weight:600;">${name}</div><div style="font-size:0.8rem; color:#888;">Joined: ${
+            clientData.submitDate
+          }</div></div>`;
+          container.appendChild(div);
+        });
+      }
+
+      // --- MODAL LOGIC (POPULATE DETAILS) ---
+      function viewOrderDetails(id) {
+        const orders = JSON.parse(localStorage.getItem("algoOrders")) || [];
+        const order = orders.find((o) => o.id === id);
+
+        if (order) {
+          document.getElementById("modalTitle").innerText = "Order Details";
+          document.getElementById("modalId").innerText = order.id;
+
+          // Info Klien (Gunakan || '-' jika data lama belum ada field ini)
+          document.getElementById("d-name").innerText = order.name;
+          document.getElementById("d-email").innerText =
+            order.email || "No email (old data)";
+          document.getElementById("d-phone").innerText = order.phone || "-";
+
+          // Set Link WA
+          if (order.phone) {
+            // Hapus karakter non-digit, ganti 0 di depan dengan 62
+            let cleanPhone = order.phone.replace(/\D/g, "");
+            if (cleanPhone.startsWith("0"))
+              cleanPhone = "62" + cleanPhone.substring(1);
+            document.getElementById(
+              "btn-wa"
+            ).href = `https://wa.me/${cleanPhone}`;
+          }
+
+          // Info Project
+          document.getElementById("d-package").innerText = order.package;
+          document.getElementById("d-amount").innerText = order.amount;
+          document.getElementById("d-date").innerText =
+            order.meetingDate || "Not set";
+          document.getElementById("d-brief").innerText =
+            order.brief || "No brief provided.";
+
+          // Gambar
+          if (order.proof) {
+            document.getElementById("proofImage").src = order.proof;
+          } else {
+            document.getElementById("proofImage").alt = "No Image Found";
+          }
+
+          document.getElementById("proofModal").classList.add("open");
+        } else {
+          alert("Data not found.");
+        }
+      }
+
+      function closeModal() {
+        document.getElementById("proofModal").classList.remove("open");
+      }
+      document
+        .getElementById("proofModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) closeModal();
+        });
+
+      function approveOrder(index) {
+        let orders = JSON.parse(localStorage.getItem("algoOrders"));
+        if (orders[index].status === "Verified") return;
+        orders[index].status = "Verified";
+        localStorage.setItem("algoOrders", JSON.stringify(orders));
+        loadData();
+      }
+      function deleteOrder(index) {
+        if (confirm("Delete this order?")) {
+          let orders = JSON.parse(localStorage.getItem("algoOrders"));
+          orders.splice(index, 1);
+          localStorage.setItem("algoOrders", JSON.stringify(orders));
+          loadData();
+        }
+      }
+      function resetData() {
+        if (confirm("Wipe ALL data?")) {
+          localStorage.removeItem("algoOrders");
+          loadData();
+        }
+      }
+
+      window.addEventListener("DOMContentLoaded", () => {
+        document.body.classList.add("loaded");
+        loadData(); // Fungsi load data yang sudah ada
+      });
+    </script>
+  </body>
+</html>

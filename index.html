@@ -26,7 +26,9 @@
           <a href="#portfolio" class="mono">02 Work</a>
           <a href="#pricing" class="mono">03 Plans</a>
         </nav>
-        <a href="order.html" class="btn-cta">START PROJECT</a>
+        <button class="btn-cta" onclick="navigateToOrder()">
+          START PROJECT
+        </button>
       </div>
     </header>
 
@@ -159,11 +161,12 @@
             <li><i class="fas fa-check"></i> Figma Source</li>
             <li><i class="fas fa-check"></i> Basic Prototype</li>
           </ul>
-          <a
-            href="order.html?plan=starter"
-            class="btn-cta btn-secondary center-text"
-            >SELECT</a
+          <button
+            class="btn-cta btn-secondary center-text full-width"
+            onclick="navigateToOrder('starter')"
           >
+            SELECT
+          </button>
         </div>
 
         <div class="price-item featured reveal">
@@ -177,9 +180,12 @@
             <li><i class="fas fa-check"></i> Design System</li>
             <li><i class="fas fa-check"></i> Interactive Proto</li>
           </ul>
-          <a href="order.html?plan=professional" class="btn-cta center-text"
-            >SELECT</a
+          <button
+            class="btn-cta center-text full-width"
+            onclick="navigateToOrder('professional')"
           >
+            SELECT
+          </button>
         </div>
 
         <div class="price-item reveal">
@@ -193,11 +199,12 @@
             <li><i class="fas fa-check"></i> Dev Handoff</li>
             <li><i class="fas fa-check"></i> Priority Support</li>
           </ul>
-          <a
-            href="order.html?plan=enterprise"
-            class="btn-cta btn-secondary center-text"
-            >CONTACT</a
+          <button
+            class="btn-cta btn-secondary center-text full-width"
+            onclick="navigateToOrder('enterprise')"
           >
+            CONTACT
+          </button>
         </div>
       </div>
     </section>
@@ -363,5 +370,33 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+      // 1. ANIMASI MASUK (FADE IN) SAAT HALAMAN DIBUKA
+      window.addEventListener("DOMContentLoaded", () => {
+        document.body.classList.add("loaded");
+        trackVisitor();
+      });
+
+      // 2. FUNGSI NAVIGASI DENGAN TRANSISI CEPAT (300ms)
+      function navigateToOrder(planType) {
+        document.body.classList.add("exiting");
+
+        // Durasi dipersingkat jadi 300ms (sesuai CSS) agar lebih snappy
+        setTimeout(() => {
+          let url = "order.html";
+          if (planType) {
+            url += `?plan=${planType}`;
+          }
+          window.location.href = url;
+        }, 300);
+      }
+
+      // 3. LOGIKA HITUNG PENGUNJUNG (VISITOR COUNTER)
+      function trackVisitor() {
+        let visits = parseInt(localStorage.getItem("algoVisits")) || 50;
+        visits++;
+        localStorage.setItem("algoVisits", visits);
+      }
+    </script>
   </body>
 </html>

@@ -1265,3 +1265,24 @@ select {
 .toast-close:hover {
   color: var(--text-primary);
 }
+
+/* --- PAGE TRANSITION ANIMATIONS --- */
+
+/* Keadaan Awal: Body transparan (supaya tidak kaget saat load) */
+body {
+  opacity: 0;
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+/* Keadaan Loaded: Body muncul normal */
+body.loaded {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Keadaan Exiting: Body menghilang & sedikit zoom out */
+body.exiting {
+  opacity: 0;
+  transform: scale(0.98); /* Efek mundur sedikit */
+  pointer-events: none; /* Mencegah klik ganda */
+}
