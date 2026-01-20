@@ -315,67 +315,118 @@ header {
   color: var(--text-secondary);
 }
 
-/* PORTFOLIO */
+/* PORTFOLIO - FIX ANTI-PECAH */
 .portfolio-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(2, 1fr); /* 2 Kolom */
+  gap: 30px;
+  width: 100%; /* Pastikan grid tidak melebihi container */
 }
+
 .portfolio-item {
   border: 1px solid var(--border);
   padding: 30px;
-  aspect-ratio: 16/10;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   background: var(--card-bg);
   box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.1);
   transition: 0.3s;
   position: relative;
   z-index: 1;
+
+  /* PENGAMAN UTAMA: Agar item tidak melar mengikuti gambar */
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  /* Hapus aspect-ratio fix jika konten gambar lebih tinggi */
+  min-height: 450px;
 }
+
 .portfolio-item:hover {
   transform: translate(-5px, -5px);
   box-shadow: 10px 10px 0px var(--accent);
   border-color: var(--text-primary);
 }
+
 .p-img-placeholder {
-  flex-grow: 1;
+  width: 100%;
+  /* Tentukan tinggi fix agar gambar seragam */
+  height: 300px;
   background: #f0f0f0;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   border: 1px solid #ddd;
+  overflow: hidden; /* Wajib: Potong gambar yang kelebihan */
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* FIX GAMBAR AGAR TIDAK MELAR */
+.p-img-placeholder img {
+  width: 100%; /* Paksa lebar pas 100% kotak */
+  height: 100%; /* Paksa tinggi pas 100% kotak */
+  object-fit: cover; /* Crop gambar biar rapi (tidak gepeng) */
+  object-position: top center; /* Fokus ke bagian atas desain */
+  display: block;
+}
+
+/* STYLE BROWSER MOCKUP (Opsional, jika dipakai) */
+.browser-mockup {
+  flex-direction: column;
+  justify-content: flex-start; /* Mulai dari atas */
+  background: #1e1e1e;
+  border: 1px solid #333;
+}
+
+.browser-dots {
+  width: 100%;
+  height: 30px;
+  background: #2d2d2d;
   display: flex;
   align-items: center;
-  justify-content: center;
-  color: #aaa;
-  overflow: hidden;
-  position: relative;
+  gap: 6px;
+  padding-left: 15px;
+  flex-shrink: 0;
+  border-bottom: 1px solid #333;
 }
-.p-img-placeholder::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(0, 0, 0, 0.05),
-    rgba(0, 0, 0, 0.05) 1px,
-    transparent 1px,
-    transparent 2px
-  );
-  pointer-events: none;
+
+.browser-dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ff5f56;
 }
+.browser-dots span:nth-child(2) {
+  background-color: #ffbd2e;
+}
+.browser-dots span:nth-child(3) {
+  background-color: #27c93f;
+}
+
+/* Koreksi khusus gambar di dalam mockup browser */
+.browser-mockup img {
+  height: calc(100% - 30px); /* Kurangi tinggi header browser */
+  object-fit: cover;
+  object-position: top left;
+}
+
 .tag {
   color: var(--accent);
   margin-bottom: 10px;
   display: block;
+  font-size: 0.85rem;
 }
 .p-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: auto;
+}
+
+/* Responsive Mobile */
+@media (max-width: 900px) {
+  .portfolio-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* PRICING */
@@ -764,4 +815,37 @@ footer {
     flex-direction: column;
     gap: 10px;
   }
+}
+
+/* --- TAMBAHAN KHUSUS UNTUK FOOTER ICONS --- */
+
+.footer-col ul li a {
+  display: flex; /* Agar ikon dan teks sejajar */
+  align-items: center;
+  gap: 10px; /* Jarak antara ikon dan teks */
+  color: #aaa; /* Warna default agak redup */
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.footer-col ul li a i {
+  width: 20px; /* Lebar tetap agar teks rata kiri */
+  text-align: center;
+  color: var(--accent); /* Warna ikon biru */
+}
+
+.footer-col ul li a:hover {
+  color: #fff; /* Warna putih saat hover */
+  transform: translateX(5px); /* Geser dikit saat hover */
+}
+
+/* --- FIX UNTUK GAMBAR PORTFOLIO --- */
+.p-img-placeholder img {
+  width: 100%; /* Paksa lebar gambar mengikuti lebar kotak */
+  height: 100%; /* Paksa tinggi gambar memenuhi kotak */
+  object-fit: cover; /* Potong gambar jika rasio tidak pas (agar tidak gepeng) */
+  object-position: top center; /* Fokuskan gambar ke bagian atas */
+  display: block; /* Menghilangkan celah putih di bawah gambar */
+  border-radius: 4px; /* Opsional: Sedikit lengkungan agar manis */
 }
