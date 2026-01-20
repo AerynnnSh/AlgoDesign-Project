@@ -15,6 +15,11 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 100px;
+}
+
 body {
   background-color: var(--bg-color);
   color: var(--text-primary);
@@ -22,6 +27,7 @@ body {
   line-height: 1.5;
   overflow-x: hidden;
 
+  /* Background Grid Pattern */
   background-image: linear-gradient(
       rgba(200, 200, 200, 0.3) 1px,
       transparent 1px
@@ -74,11 +80,10 @@ header {
   position: fixed;
   top: 0;
   width: 100%;
-  background: rgba(242, 242, 242, 0.9);
+  background: rgba(242, 242, 242, 0.95);
   backdrop-filter: blur(10px);
   z-index: 100;
   border-bottom: 1px solid var(--border);
-  transition: transform 0.3s ease;
 }
 
 .nav-container {
@@ -123,7 +128,7 @@ header {
 
 /* BUTTONS */
 .btn-cta {
-  padding: 12px 24px;
+  padding: 12px 28px;
   background: var(--text-primary);
   color: #ffffff;
   font-family: "Space Grotesk", sans-serif;
@@ -133,9 +138,11 @@ header {
   border: 1px solid var(--text-primary);
   position: relative;
   overflow: hidden;
-  transition: color 0.3s;
+  transition: all 0.3s;
   z-index: 1;
   display: inline-block;
+  min-width: 160px; /* Agar tombol tidak terlalu kecil */
+  text-align: center;
 }
 .btn-cta::before {
   content: "";
@@ -153,6 +160,7 @@ header {
 }
 .btn-cta:hover {
   border-color: var(--accent);
+  color: white;
 }
 
 .btn-secondary {
@@ -164,41 +172,59 @@ header {
   color: #fff;
 }
 
-/* HERO SECTION */
+/* HERO SECTION - Compact Version */
 .hero {
-  padding-top: 180px;
-  padding-bottom: 100px;
-  min-height: 90vh;
+  /* Kurangi padding atas/bawah agar konten naik */
+  padding-top: 140px;
+  padding-bottom: 60px;
+  /* Ganti min-height jadi lebih pendek agar stats bar kelihatan */
+  min-height: 75vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center; /* Center konten secara vertikal */
 }
 .hero-label {
   color: var(--accent);
   background: rgba(0, 68, 255, 0.1);
   padding: 5px 10px;
   display: inline-block;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   font-weight: 600;
 }
+/* LOCKING JUDUL */
 .hero h1 {
-  font-size: clamp(3rem, 9vw, 6.5rem);
-  max-width: 95%;
-  margin-bottom: 30px;
+  font-size: clamp(
+    3rem,
+    7vw,
+    5.5rem
+  ); /* Sedikit diperkecil agar tidak terlalu raksasa */
+  max-width: 90%;
+  margin-bottom: 25px;
   color: #000;
+
   opacity: 0;
-  min-height: 2.2em;
+  min-height: 2.4em;
+  white-space: pre-line;
+  vertical-align: bottom;
+  display: block;
 }
+/* LOCKING PARAGRAF */
 .hero p {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   color: var(--text-secondary);
-  max-width: 600px;
-  margin-bottom: 50px;
+  max-width: 550px;
+  margin-bottom: 40px;
   font-weight: 400;
+  line-height: 1.6;
+
+  min-height: 4.5em;
+  display: block;
+
   opacity: 0;
   transform: translateY(20px);
   animation: fadeInUp 0.8s forwards 1.5s;
 }
+
 .hero-buttons {
   display: flex;
   gap: 20px;
@@ -206,16 +232,25 @@ header {
   animation: fadeInUp 0.8s forwards 1.8s;
 }
 
-/* STATS BAR */
+/* STATS BAR - Fixed Alignment */
 .stats-bar {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
   background: var(--card-bg);
+  position: relative;
+  z-index: 2;
+
+  /* FIX: Batasi lebar stats bar agar sejajar dengan konten lain */
+  max-width: 1400px;
+  margin: 0 auto; /* Tengah */
+  border-left: 1px solid var(--border); /* Tambah border kiri kanan */
+  border-right: 1px solid var(--border);
 }
 .stat-item {
-  padding: 30px var(--container-padding);
+  /* Kurangi padding agar tidak terlalu renggang */
+  padding: 25px 30px;
   border-right: 1px solid var(--border);
 }
 .stat-item:last-child {
@@ -223,7 +258,7 @@ header {
 }
 .stat-value {
   font-family: "Space Grotesk", sans-serif;
-  font-size: 2.5rem;
+  font-size: 2.2rem; /* Sedikit diperkecil dari 2.5rem */
   display: block;
   margin-bottom: 5px;
   font-weight: 700;
@@ -237,6 +272,10 @@ header {
   justify-content: space-between;
   align-items: flex-end;
   border-bottom: 4px solid var(--text-primary);
+
+  background: var(--bg-color);
+  position: relative;
+  z-index: 1;
 }
 .section-title {
   font-size: 3rem;
@@ -253,6 +292,10 @@ header {
   transition: 0.3s;
   align-items: start;
   cursor: default;
+
+  background: var(--bg-color);
+  position: relative;
+  z-index: 1;
 }
 .service-item:hover {
   background: #e8e8e8;
@@ -288,6 +331,8 @@ header {
   background: var(--card-bg);
   box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.1);
   transition: 0.3s;
+  position: relative;
+  z-index: 1;
 }
 .portfolio-item:hover {
   transform: translate(-5px, -5px);
@@ -349,6 +394,8 @@ header {
   justify-content: space-between;
   min-height: 450px;
   transition: 0.3s;
+  position: relative;
+  z-index: 1;
 }
 .price-item:hover {
   border-color: var(--accent);
@@ -357,6 +404,7 @@ header {
   background: var(--text-primary);
   color: #fff;
   transform: scale(1.02);
+  z-index: 2;
 }
 .price-item.featured h3,
 .price-item.featured .amount,
@@ -395,6 +443,8 @@ footer {
   padding: 80px 0;
   background: var(--text-primary);
   color: #fff;
+  position: relative;
+  z-index: 2;
 }
 .footer-wrapper {
   display: flex;
@@ -450,11 +500,23 @@ footer {
 
 /* RESPONSIVE */
 @media (max-width: 900px) {
+  .hero {
+    padding-top: 120px;
+  } /* Sesuaikan di mobile */
   .hero h1 {
     font-size: 3.5rem;
   }
   .stats-bar {
     grid-template-columns: repeat(2, 1fr);
+    border-left: none;
+    border-right: none;
+  }
+  .stat-item {
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .stat-item:nth-child(2n) {
+    border-right: none;
   }
   .service-item {
     grid-template-columns: 1fr;

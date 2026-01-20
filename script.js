@@ -13,11 +13,8 @@ class TextScramble {
     for (let i = 0; i < length; i++) {
       const from = oldText[i] || "";
       const to = newText[i] || "";
-
-      // Seting KECEPATAN: Angka lebih besar = Lebih lambat
       const start = Math.floor(Math.random() * 150);
       const end = start + Math.floor(Math.random() * 160);
-
       this.queue.push({ from, to, start, end });
     }
     cancelAnimationFrame(this.frameRequest);
@@ -34,7 +31,6 @@ class TextScramble {
         complete++;
         output += to;
       } else if (this.frame >= start) {
-        // Setting KEDIPAN: Angka kecil (0.05) = Jarang berkedip (tenang)
         if (!char || Math.random() < 0.05) {
           char = this.chars[Math.floor(Math.random() * this.chars.length)];
           this.queue[i].char = char;
@@ -61,8 +57,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const fx = new TextScramble(el);
     const finalPhrase = el.innerHTML;
     el.innerHTML = "";
-
-    // Delay 800ms sebelum mulai
     setTimeout(() => {
       el.style.opacity = 1;
       fx.setText(finalPhrase.replace(/<br>/g, "\n"));
@@ -83,7 +77,6 @@ const revealCallback = (entries, observer) => {
     }
   });
 };
-
 const revealOptions = { threshold: 0.15 };
 const revealObserver = new IntersectionObserver(revealCallback, revealOptions);
 revealElements.forEach((el) => revealObserver.observe(el));
@@ -94,11 +87,8 @@ function runCounter() {
   counters.forEach((counter) => {
     const target = +counter.getAttribute("data-target");
     if (!target) return;
-
-    // Kecepatan counter (400 = lambat/elegan)
     const speed = 400;
     const increment = target / speed;
-
     const updateCount = () => {
       const count = +counter.innerText;
       if (count < target) {
@@ -111,3 +101,23 @@ function runCounter() {
     updateCount();
   });
 }
+
+// --- 4. NAVIGATION SCROLL (CLEAN) ---
+document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+  anchor.addEventListener("click", function (e) {
+    e.preventDefault();
+    const targetId = this.getAttribute("href");
+    if (targetId === "#") return;
+    const targetElement = document.querySelector(targetId);
+    if (targetElement) {
+      const headerOffset = 100;
+      const elementPosition = targetElement.getBoundingClientRect().top;
+      const offsetPosition =
+        elementPosition + window.pageYOffset - headerOffset;
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
+  });
+});
